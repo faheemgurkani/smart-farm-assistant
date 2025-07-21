@@ -1,0 +1,57 @@
+# Byte-compiled / cache / virtual env
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Gradio cache
+gradio_cached_examples/
+
+# Logs and database
+db/logs.db
+db/chat_sessions/
+
+# Generated protobuf files
+generated/farm_pb2.py
+generated/farm_pb2_grpc.py
+generated/__pycache__/
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment variables and secrets
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+chat_history/
+db/
+generated/

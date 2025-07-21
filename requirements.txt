@@ -1,0 +1,11 @@
+grpcio
+grpcio-tools
+requests
+gradio
+Pillow
+opencv-python
+sqlite-utils
+python-dotenv
+# whisper-cpp
+# coqui-tts    
+pyttsx3

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+service Farming {
+  rpc Analyze (FarmRequest) returns (FarmReply);
+}
+
+message FarmRequest {
+  string session_id = 1;
+  bytes image = 2;
+  string audio = 3; // file path
+  string text = 4;
+}
+
+message FarmReply {
+  string advice = 1;
+  bytes audio = 2;
+}
