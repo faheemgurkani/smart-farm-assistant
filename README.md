@@ -2,7 +2,7 @@
 
 A lightweight, multimodal, **offline-first** AI assistant designed to empower **smallholder farmers** with **actionable agricultural insights**. This assistant utilizes the power of **Gemma 3n** and runs fully locally using **Gradio** for the frontend and **gRPC** for backend communication. It supports **image**, **audio**, and **text** inputs to guide sustainable and regenerative farming practices.
 
----
+<!-- --- -->
 
 ## Features
 
@@ -36,7 +36,7 @@ A lightweight, multimodal, **offline-first** AI assistant designed to empower **
 * **Auto-renames** session files based on the first user message.
 * Load past sessions via dropdown selector.
 
----
+<!-- --- -->
 
 ## Tech Stack
 
@@ -46,7 +46,7 @@ A lightweight, multimodal, **offline-first** AI assistant designed to empower **
 | Frontend  | Gradio (Blocks API)                                                            |
 | Models    | Local AI via Ollama, Gemma 3n (text), whisper/jina (ASR), vision model (image) |
 
----
+<!-- --- -->
 
 ## Installation
 
@@ -75,7 +75,7 @@ python server.py
 python app.py
 ```
 
----
+<!-- --- -->
 
 ## Use-Cases
 
@@ -86,7 +86,7 @@ python app.py
 | Multilingual Query | Enter questions in different languages, the assistant will respond accordingly.        |
 | Session Recall     | Revisit earlier advice and responses via chat history loading.                         |
 
----
+<!-- --- -->
 
 ## Project Structure
 
@@ -101,7 +101,7 @@ smart-farm-assistant/
 └── README.md
 ```
 
----
+<!-- --- -->
 
 ## Future Enhancements
 
@@ -110,13 +110,13 @@ smart-farm-assistant/
 * Soil sensor data integration
 * RAG-based document retrieval from agricultural policies
 
----
+<!-- --- -->
 
 ## License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
 
----
+<!-- --- -->
 
 ## Acknowledgments
 
@@ -125,13 +125,13 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 * [Gradio](https://www.gradio.app/) for the seamless interface
 * [FAO](https://www.fao.org/) for inspiration in regenerative agriculture
 
----
+<!-- --- -->
 
 ## Feedback & Contributions
 
 We welcome PRs, suggestions, and issues! Together, let's empower sustainable agriculture through AI.
 
----
+<!-- --- -->
 
 > Built by Muhammad Faheem for the Gemma 3n Hackathon
 
