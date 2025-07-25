@@ -1,5 +1,7 @@
 import subprocess, socket, time, atexit
 
+
+
 ollama_proc = None
 
 def is_ollama_running(host="127.0.0.1", port=11434):

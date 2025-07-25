@@ -8,18 +8,7 @@ from src.server import ollama_client, tts, vision, asr, logger
 from src.server import chat_memory
 from src.utils.prompt_builder import build_prompt
 
-# class FarmingServicer(farm_pb2_grpc.FarmingServicer):
-#     def Analyze(self, request, context):
-#         image_prompt = vision.process_image(request.image) if request.image else ""
-#         audio_text = asr.transcribe(request.audio) if request.audio else ""
-#         prompt = build_prompt(request.text, image_prompt, audio_text)
-        
-#         advice = ollama_client.generate_response(prompt)
-#         audio_bytes = tts.speak(advice)
 
-#         logger.log_entry("mixed", prompt, advice, audio_path=None)  # simplified
-
-#         return farm_pb2.FarmReply(advice=advice, audio=audio_bytes)
 
 class FarmingServicer(farm_pb2_grpc.FarmingServicer):
     def Analyze(self, request, context):

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package tts;
+
+service TTSService {
+  rpc Speak (TTSRequest) returns (TTSResponse);
+}
+
+message TTSRequest {
+  string text_output = 1;
+}
+
+message TTSResponse {
+  bytes audio = 1;
+}

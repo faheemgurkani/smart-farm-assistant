@@ -1,5 +1,4 @@
-import sys
-import os
+import sys, os
 
 # Adding the project root (the directory containing 'src' and 'scripts') to sys.path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -7,10 +6,9 @@ project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from src.frontend.gradio_ui import launch_ui
+from src.services.multimodal_service import server, ollama_startup
 
-# print()
+if __name__ == "__main__":
+    ollama_startup.start_ollama()
+    server.serve()
 
-launch_ui()
-
-print()

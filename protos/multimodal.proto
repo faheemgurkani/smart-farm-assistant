@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package multimodal;
+
+service MultimodalService {
+  rpc Analyze (MultimodalRequest) returns (MultimodalResponse);
+}
+
+message MultimodalRequest {
+  string session_id = 1;
+  bytes image = 2;
+  string audio_path = 3;
+  string text = 4;
+}
+
+message MultimodalResponse {
+  string text_output = 1;
+}
+
+
