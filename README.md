@@ -4,6 +4,8 @@
 
 AgriGemma is a comprehensive, privacy-first agricultural AI assistant that leverages Google's Gemma 3n model to provide real-time farming advice through multiple input modalities. Built with a microservices architecture, the system processes text, voice, and image inputs to deliver personalized crop management recommendations, plant disease diagnosis, and sustainable farming guidance.
 
+**Note:** As of now, the vision based modality support of the respective gemma3n models are not provided via the ollama platform for offline inference
+
 ### **Core Architecture & Technical Implementation**
 
 **Microservices Architecture:**

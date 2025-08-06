@@ -221,16 +221,59 @@ Answer:"""
 # --- Specialized Workers (now LLM-powered) ---
 def plant_diagnosis_worker(image_bytes, session_context):
     print(f"[WORKFLOW] Plant Diagnosis Worker: Starting image analysis...")
-    # LLM: Diagnose from Image
-    prompt = f"You are a plant pathologist. Analyze the following image and provide a diagnosis and crop type. Context: {session_context}"
-    # In a real system, you would encode the image or describe it; here, we use a placeholder string
-    image_desc = vision.process_image(image_bytes) if image_bytes else "No image provided."
-    llm_input = f"Image Description: {image_desc}\n{prompt}"
-    print(f"[WORKFLOW] Plant Diagnosis Worker: Calling LLM for diagnosis...")
-    llm_output = ollama_client.generate_response(llm_input)
+    
+    if not image_bytes:
+        return {"diagnosis": "No image provided for analysis.", "crop_type": "unknown"}
+    
+    # Debug: Print image info
+    image_info = vision.get_image_info(image_bytes)
+    print(f"[WORKFLOW] Plant Diagnosis Worker: Image info: {image_info}")
+    print(f"[WORKFLOW] Plant Diagnosis Worker: Image bytes length: {len(image_bytes)}")
+    
+    # Create a comprehensive prompt for plant pathology analysis
+    prompt = f"""You are an expert plant pathologist and agricultural specialist. Analyze the provided image and provide a detailed diagnosis.
+
+Please provide your analysis in the following format:
+
+CROP_TYPE: [Identify the crop type based on visual characteristics]
+DIAGNOSIS: [Detailed analysis of any plant health issues, diseases, or pests visible in the image]
+SYMPTOMS: [List specific symptoms observed]
+RECOMMENDATIONS: [Provide actionable advice for treatment or prevention]
+CONFIDENCE: [High/Medium/Low - based on image clarity and symptom visibility]
+
+Focus on:
+- Plant disease symptoms (spots, lesions, wilting, discoloration)
+- Pest damage (holes, feeding marks, insect presence)
+- Nutrient deficiencies (yellowing, stunted growth)
+- Environmental stress (drought, waterlogging, temperature stress)
+- Overall plant health and vigor
+- Growth stage and development
+- Soil and environmental conditions (if visible)
+
+If the image shows healthy plants, mention that and provide general care advice.
+If the image quality is poor or unclear, mention limitations and suggest better photos.
+
+Context: {session_context}
+
+Provide a thorough analysis based on what you can observe in the image. Be comprehensive and helpful for farmers."""
+    
+    print(f"[WORKFLOW] Plant Diagnosis Worker: Calling vision model for diagnosis...")
+    llm_output = ollama_client.generate_vision_response(prompt, image_bytes)
     print(f"[WORKFLOW] Plant Diagnosis Worker: LLM response received")
-    # Placeholder parse: extract diagnosis/crop_type from LLM output
-    result = {"diagnosis": llm_output, "crop_type": "wheat"}  # TODO: parse real output
+    
+    # Parse the structured response
+    result = {"diagnosis": llm_output, "crop_type": "unknown"}
+    
+    # Try to extract crop type from the response
+    lines = llm_output.split('\n')
+    for line in lines:
+        if line.strip().upper().startswith('CROP_TYPE:'):
+            crop_type = line.split(':', 1)[1].strip()
+            # Clean up the crop type (remove asterisks and extra formatting)
+            crop_type = crop_type.replace('*', '').strip()
+            result["crop_type"] = crop_type
+            break
+    
     print(f"[WORKFLOW] Plant Diagnosis Worker: Result = {result}")
     return result
 
@@ -406,11 +449,23 @@ def build_context_aware_prompt(worker_outputs, session_context, user_input, prev
         language_name = language_info.get('language_name', 'the detected language')
         prompt_parts.append(f"IMPORTANT: Please respond in {language_name}. The user is speaking in {language_name}.")
     
-    if prev_context:
-        prompt_parts.append(f"Previous Conversation:\n{prev_context}")
-    if context_summary:
-        prompt_parts.append(f"Current Context:\n{chr(10).join(context_summary)}")
-    prompt_parts.append(f"User Query: {user_input}")
+    # Special handling for image-only inputs
+    if not user_input.strip() and worker_outputs and 'diagnosis' in worker_outputs:
+        prompt_parts.append("You are an agricultural expert. The user has uploaded an image for plant analysis.")
+        prompt_parts.append("Based on the detailed analysis provided, give a comprehensive response that:")
+        prompt_parts.append("1. Summarizes the key findings from the image analysis")
+        prompt_parts.append("2. Explains the diagnosis in simple terms")
+        prompt_parts.append("3. Provides actionable recommendations")
+        prompt_parts.append("4. Offers additional advice for prevention")
+        prompt_parts.append("5. Mentions any important considerations or warnings")
+        prompt_parts.append("Make your response conversational, helpful, and easy to understand for farmers.")
+    else:
+        if prev_context:
+            prompt_parts.append(f"Previous Conversation:\n{prev_context}")
+        if context_summary:
+            prompt_parts.append(f"Current Context:\n{chr(10).join(context_summary)}")
+        prompt_parts.append(f"User Query: {user_input}")
+    
     return "\n\n".join(prompt_parts)
 
 # --- Safe LLM Call ---
@@ -530,6 +585,11 @@ class MultimodalServicer(multimodal_pb2_grpc.MultimodalServiceServicer):
         if input_type == "voice" and 'combined_text' in locals():
             final_user_input = combined_text
             print(f"[WORKFLOW] Using combined text for voice input: '{final_user_input}'")
+        elif input_type == "image" and not text.strip():
+            # For image-only inputs, create a meaningful user query based on the analysis
+            crop_type = worker_outputs.get('crop_type', 'plant')
+            final_user_input = f"Please analyze this {crop_type} image and provide a detailed diagnosis and recommendations."
+            print(f"[WORKFLOW] Created user query for image-only input: '{final_user_input}'")
         
         # Get language information from session context
         language_info = session_context.get('detected_language')

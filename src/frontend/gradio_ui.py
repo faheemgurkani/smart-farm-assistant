@@ -38,9 +38,20 @@ def analyze_with_context(image, audio, text, chatbot_messages):
     # Step 1: Multimodal
     with grpc.insecure_channel("localhost:50051", options=channel_options) as mm_channel:
         mm_stub = multimodal_pb2_grpc.MultimodalServiceStub(mm_channel)
+        
+        # Handle image file path - read the file if path is provided
+        image_data = b""
+        if image:
+            try:
+                with open(image, 'rb') as img_file:
+                    image_data = img_file.read()
+            except Exception as e:
+                print(f"Error reading image file: {e}")
+                image_data = b""
+        
         mm_request = multimodal_pb2.MultimodalRequest(
             session_id=session_id,
-            image=image.read() if image else b"",
+            image=image_data,
             audio_path=audio if audio else "",
             text=text or ""
         )
