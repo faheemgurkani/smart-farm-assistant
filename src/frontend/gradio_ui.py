@@ -18,6 +18,7 @@ os.makedirs(HISTORY_DIR, exist_ok=True)
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 session_id = str(uuid.uuid4())  # Track current session
+# This session_id is sent with every backend request to maintain session-level memory.
 
 def slugify(text, max_length=30):
     text = re.sub(r"[^\w\s-]", "", text).strip().lower()
@@ -27,25 +28,43 @@ def slugify(text, max_length=30):
 # ========== gRPC Communication ==========
 def analyze_with_context(image, audio, text, chatbot_messages):
     global session_id
+    
+    # Configure gRPC channel options for larger message sizes
+    channel_options = [
+        ('grpc.max_send_message_length', 50 * 1024 * 1024),  # 50MB send limit
+        ('grpc.max_receive_message_length', 50 * 1024 * 1024),  # 50MB receive limit
+    ]
+    
     # Step 1: Multimodal
-    with grpc.insecure_channel("localhost:50051") as mm_channel:
+    with grpc.insecure_channel("localhost:50051", options=channel_options) as mm_channel:
         mm_stub = multimodal_pb2_grpc.MultimodalServiceStub(mm_channel)
         mm_request = multimodal_pb2.MultimodalRequest(
             session_id=session_id,
             image=image.read() if image else b"",
-            audio_path=audio.name if audio else "",
+            audio_path=audio if audio else "",
             text=text or ""
         )
         mm_response = mm_stub.Analyze(mm_request)
 
     # Step 2: TTS
-    with grpc.insecure_channel("localhost:50052") as tts_channel:
+    with grpc.insecure_channel("localhost:50052", options=channel_options) as tts_channel:
         tts_stub = tts_pb2_grpc.TTSServiceStub(tts_channel)
-        tts_request = tts_pb2.TTSRequest(text_output=mm_response.text_output)
+        
+        # Get language information from multimodal response
+        language_code = getattr(mm_response, 'detected_language_code', None)
+        if language_code and language_code.strip():
+            print(f"[FRONTEND] Using detected language: {language_code}")
+            tts_request = tts_pb2.TTSRequest(
+                text_output=mm_response.text_output,
+                language_code=language_code
+            )
+        else:
+            tts_request = tts_pb2.TTSRequest(text_output=mm_response.text_output)
+        
         tts_response = tts_stub.Speak(tts_request)
 
     # Step 3: Update chat
-    user_msg = {"role": "user", "content": text or (audio.name if audio else "[Image provided]")}
+    user_msg = {"role": "user", "content": text or (audio if audio else "[Image provided]")}
     bot_msg = {"role": "assistant", "content": mm_response.text_output}
 
     chatbot_messages.append(user_msg)

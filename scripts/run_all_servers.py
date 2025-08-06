@@ -15,7 +15,7 @@ def launch_services():
     tts_proc = subprocess.Popen(["python3", "scripts/run_tts_server.py"])
     time.sleep(1)
     
-    print()
+    # print()
 
     # Launch Gradio UI
     ui_proc = subprocess.Popen(["python3", "scripts/run_ui.py"])

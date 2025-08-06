@@ -4,12 +4,26 @@ package tts;
 
 service TTSService {
   rpc Speak (TTSRequest) returns (TTSResponse);
+  rpc GetStatus (TTSStatusRequest) returns (TTSStatusResponse);
 }
 
 message TTSRequest {
   string text_output = 1;
+  string output_format = 2;  // Optional: wav, mp3, etc.
+  string language_code = 3;  // Optional: ISO language code (e.g., 'en', 'es', 'fr')
 }
 
 message TTSResponse {
   bytes audio = 1;
+}
+
+message TTSStatusRequest {
+  // Empty request for status
+}
+
+message TTSStatusResponse {
+  bool coqui_available = 1;
+  bool model_loaded = 2;
+  bool fallback_available = 3;
+  string available_models = 4;
 }

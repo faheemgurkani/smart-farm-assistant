@@ -12,7 +12,13 @@ import generated.farm_pb2 as farm_pb2
 import generated.farm_pb2_grpc as farm_pb2_grpc
 
 def test_grpc_request():
-    with grpc.insecure_channel("localhost:50051") as channel:
+    # Configure gRPC channel options for larger message sizes
+    channel_options = [
+        ('grpc.max_send_message_length', 50 * 1024 * 1024),  # 50MB send limit
+        ('grpc.max_receive_message_length', 50 * 1024 * 1024),  # 50MB receive limit
+    ]
+    
+    with grpc.insecure_channel("localhost:50051", options=channel_options) as channel:
         stub = farm_pb2_grpc.FarmingStub(channel)
 
         req = farm_pb2.FarmRequest(

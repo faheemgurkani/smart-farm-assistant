@@ -15,6 +15,8 @@ message MultimodalRequest {
 
 message MultimodalResponse {
   string text_output = 1;
+  string detected_language_code = 2;  // ISO language code (e.g., 'en', 'es', 'fr')
+  string detected_language_name = 3;  // Language name (e.g., 'English', 'Spanish')
 }
 
 

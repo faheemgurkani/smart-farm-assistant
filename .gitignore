@@ -1,13 +1,14 @@
-# Byte-compiled / cache / virtual env
+# =============================================================================
+# Python
+# =============================================================================
+
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*$py.class
+
+# C extensions
 *.so
-.Python
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
 
 # Distribution / packaging
 .Python
@@ -22,36 +23,391 @@ lib64/
 parts/
 sdist/
 var/
+wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 MANIFEST
 
-# Gradio cache
-gradio_cached_examples/
+# PyInstaller
+*.manifest
+*.spec
 
-# Logs and database
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# =============================================================================
+# Project-specific files
+# =============================================================================
+
+# Database files
 db/logs.db
+db/logs.db-journal
 db/chat_sessions/
+db/__pycache__/
 
 # Generated protobuf files
-generated/farm_pb2.py
-generated/farm_pb2_grpc.py
+generated/
 generated/__pycache__/
 
-# IDE/editor files
+# Audio files and downloads
+downloads/
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.m4a
+
+# Session exports and temporary files
+session_export_*.json
+chat_history/
+temp_*
+
+# Gradio cache and temporary files
+gradio_cached_examples/
+gradio_temp/
+gradio_cached_examples/
+
+# =============================================================================
+# IDE and Editor files
+# =============================================================================
+
+# VSCode
 .vscode/
+*.code-workspace
+
+# PyCharm
 .idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
 *.swp
 *.swo
+*~
 
-# Environment variables and secrets
-.env
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
 
-# OS files
+# =============================================================================
+# OS-specific files
+# =============================================================================
+
+# macOS
 .DS_Store
-Thumbs.db
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
-chat_history/
-db/
-generated/
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# =============================================================================
+# Logs and temporary files
+# =============================================================================
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+
+# =============================================================================
+# Machine Learning and AI models
+# =============================================================================
+
+# Model files
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.pb
+*.onnx
+*.tflite
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Model directories
+models/
+checkpoints/
+weights/
+pretrained/
+
+# =============================================================================
+# Configuration and secrets
+# =============================================================================
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# API keys and secrets
+secrets.json
+config.json
+credentials.json
+*.key
+*.pem
+*.crt
+
+# =============================================================================
+# Testing and coverage
+# =============================================================================
+
+# Test outputs
+test_outputs/
+test_results/
+.coverage
+coverage.xml
+htmlcov/
+
+# =============================================================================
+# Documentation builds
+# =============================================================================
+
+# Sphinx
+docs/_build/
+docs/build/
+
+# MkDocs
+site/
+
+# =============================================================================
+# Docker and containerization
+# =============================================================================
+
+# Docker
+Dockerfile.dev
+docker-compose.override.yml
+.dockerignore
+
+# =============================================================================
+# Backup and archive files
+# =============================================================================
+
+# Archives
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# =============================================================================
+# Specific to this project
+# =============================================================================
+
+# Ollama models and data
+.ollama/
+ollama_models/
+
+# TTS model files
+tts_models/
+*.tts
+
+# Whisper models
+whisper_models/
+
+# Session data (already covered above, but being explicit)
+db/chat_sessions/*.json
+db/chat_sessions/*_metadata.json
+
+# Generated protobuf files (already covered above, but being explicit)
+generated/*_pb2.py
+generated/*_pb2_grpc.py
+
+# Audio processing temporary files
+*.wav.tmp
+*.mp3.tmp
+temp_audio/
+
+# =============================================================================
+# Development and debugging
+# =============================================================================
+
+# Debug files
+*.debug
+debug.log
+debug_*.log
+
+# Profiling
+*.prof
+*.profile
+
+# Memory dumps
+*.dump
+*.dmp
+
+# =============================================================================
+# Git and version control
+# =============================================================================
+
+# Git
+.git/
+.gitignore.bak
+.gitattributes.bak
+
+# =============================================================================
+# End of .gitignore
+# =============================================================================

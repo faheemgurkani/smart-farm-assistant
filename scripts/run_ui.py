@@ -9,8 +9,9 @@ if project_root not in sys.path:
 
 from src.frontend.gradio_ui import launch_ui
 
-# print()
+print()
 
 launch_ui()
 
+print()
 print()
