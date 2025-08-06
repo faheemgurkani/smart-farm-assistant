@@ -38,10 +38,6 @@ The system employs a robust microservices design with three primary services:
 ### **Key Technical Features**
 
 **Multimodal Processing Pipeline:**
-```
-Input → Language Detection → Intent Classification → Specialized Workers → Response Generation → TTS Output
-```
-
 ![AgriGemma System Architecture](assests/system_architecture_diagram.png)
 
 **Intent Classification System:**
